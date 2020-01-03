@@ -133,7 +133,9 @@ class instagram : Fragment() {
                 val builder = StringBuilder()
                 var u=urlinput.text.toString().trim()
                 if (!urlinput.text.toString().trim().contains("instagram.com")){
-                    u="https://www.instagram.com/${u}/"
+                    if(!urlinput.text.toString().trim().contains("facebook.com")) {
+                        u="https://www.instagram.com/${u}/"
+                    }
                 }
                 try {
                     val doc = Jsoup.connect(u).get()
