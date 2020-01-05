@@ -4,7 +4,10 @@ package com.insta.instadownloader
 import android.Manifest
 import android.app.DownloadManager
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaScannerConnection
@@ -25,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_instagram.view.*
 import org.jsoup.Jsoup
 import java.io.File
 import java.io.IOException
+import kotlin.math.log
 
 /**
  * A simple [Fragment] subclass.
@@ -39,6 +43,12 @@ class instagram : Fragment() {
     lateinit var download:Button
     lateinit var image:ImageView
     lateinit var videoview:VideoView
+
+    var onComplete = object :BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            Toast.makeText(context,"File Downloaded",Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +66,9 @@ class instagram : Fragment() {
         dialog= ProgressDialog(context)
         dialog.setTitle("")
         dialog.setMessage("Loading...")
+
+        activity!!.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+
 
         if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP) {
             if (ContextCompat.checkSelfPermission(context!!,
@@ -91,6 +104,7 @@ class instagram : Fragment() {
 
         return v
     }
+
 
     private fun scanGallery(cntx: Context, path: String) {
         try {
@@ -140,9 +154,15 @@ class instagram : Fragment() {
                 try {
                     val doc = Jsoup.connect(u).get()
                     var links = doc.select("meta[property=og:video]")
+                    var title = doc.select("title")
+                    var titlemain=title.toString().trim().split("Instagram:")[1].replace("</title>","")
                     //checking whether it is video or image
                     if (links.isEmpty()) {
                         links = doc.select("meta[property=og:image]")
+                        title = doc.select("title")
+                        titlemain=title.toString().trim().split("Instagram:")[1].replace("</title>","")
+
+                        Log.d("xxxx","$tag")
                         for (link in links) {
                             builder.append(link.attr("content"))
                         }
@@ -207,6 +227,7 @@ class instagram : Fragment() {
 
     private class VideoDownloadTask(var context: Context): AsyncTask<String, String, String>(){
         override fun onPreExecute() {
+            Toast.makeText(context,"Downloading...",Toast.LENGTH_SHORT).show()
         }
 
         override fun doInBackground(vararg p0: String?): String? {
@@ -219,7 +240,6 @@ class instagram : Fragment() {
         }
 
         override fun onPostExecute(result: String?) {
-
         }
 
         private fun downloadFile(fileURL: String, fileName: String) {
@@ -228,13 +248,14 @@ class instagram : Fragment() {
                 folder.mkdir()
             val request = DownloadManager.Request(Uri.parse(fileURL))
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-            request.setTitle("download")
-            request.setDescription("file downloading")
+            request.setTitle(fileName)
+            request.setDescription("Downloading...")
             request.allowScanningByMediaScanner()
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             request.setDestinationInExternalPublicDir("/Insta Downloader",fileName)
             val manager= context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             manager.enqueue(request)
+
         }
 
     }

@@ -6,14 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <view
+        android:id="@+id/tablayout"
+        class="com.google.android.material.tabs.TabLayout"
+        android:layout_width="0dp"
+        android:theme="@style/tabtheme"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        app:tabTextColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.insta.instadownloader.instagram"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tablayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
