@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".imageactivity">
+
+
+        <com.google.android.gms.ads.doubleclick.PublisherAdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/publisherAdViewtop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.gms.ads.doubleclick.PublisherAdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/publisherAdViewbottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/publisherAdViewtop"
+            app:layout_constraintBottom_toTopOf="@id/publisherAdViewbottom"/>
+
+        <VideoView
+            android:id="@+id/videoview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/publisherAdViewtop"
+            app:layout_constraintBottom_toTopOf="@id/publisherAdViewbottom"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

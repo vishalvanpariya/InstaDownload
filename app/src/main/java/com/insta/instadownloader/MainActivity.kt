@@ -1,35 +1,33 @@
 package com.insta.instadownloader
 
-import android.Manifest
-import android.app.DownloadManager
-import android.app.ProgressDialog
+import android.app.AlertDialog
 import android.content.Context
-import android.content.pm.PackageManager
-import android.net.Uri
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.os.Bundle
+import android.os.Handler
+import android.os.Process
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
-import android.view.View
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.Jsoup
-import android.media.MediaPlayer
-import android.media.MediaScannerConnection
-import android.os.*
-import java.io.*
-import android.widget.*
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setTitle("Downloader")
 
 
         viewpager.adapter=PagerAdapter(supportFragmentManager)
@@ -46,8 +44,8 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 viewpager.setCurrentItem(p0!!.position)
             }
-
         })
+
 
     }
 
