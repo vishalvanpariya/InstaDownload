@@ -123,22 +123,6 @@ class facebook : Fragment() {
         activity!!.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
 
-        if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP) {
-            if (ContextCompat.checkSelfPermission(context!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(context!!,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            ) {
-                v.button.isEnabled = false
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), 200
-                )
-            }
-        }
-
         mInterstitialAd!!.adListener = object : AdListener() {
             override fun onAdClosed() {
                 super.onAdClosed()
@@ -183,20 +167,6 @@ class facebook : Fragment() {
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode==200){
-            if (grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                button.isEnabled=true
-            }
-            else{
-                Toast.makeText(context,"Sorry without permission you can not download image",Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
 
     fun download(url:String){
