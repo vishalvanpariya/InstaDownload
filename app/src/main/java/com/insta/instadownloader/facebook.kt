@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -189,6 +190,15 @@ class facebook : Fragment() {
                     return@Runnable
                 }
                 var title=""
+                if(!URLUtil.isValidUrl(u)){
+                    activity!!.runOnUiThread(Runnable {
+                        Toast.makeText(context, "Plase enter Valid URL", Toast.LENGTH_SHORT).show()
+                        if (dialog.isShowing)
+                            dialog.dismiss()
+                        button.isEnabled = true
+                    })
+                    return@Runnable
+                }
                 try {
                     val doc = Jsoup.connect(u).get()
                     var links = doc.select("meta[property=og:video]")
@@ -239,9 +249,10 @@ class facebook : Fragment() {
                     activity!!.runOnUiThread(Runnable{
                         Toast.makeText(context,"Cant loading url,Please try again", Toast.LENGTH_SHORT).show()
                         button.isEnabled=true
+                        if (dialog.isShowing)
+                            dialog.dismiss()
                     })
-                    if (dialog.isShowing)
-                        dialog.dismiss()
+
 
                 }
             }
