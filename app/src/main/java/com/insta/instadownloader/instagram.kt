@@ -208,7 +208,8 @@ class instagram : Fragment() {
 
     fun download(url:String){
         Log.d("xxxx",url)
-        VideoDownloadTask(context!!).execute(url)
+        downloadFile(url,"${System.currentTimeMillis()}_video.mp4")
+        //VideoDownloadTask(context!!).execute(url)
     }
 
     fun geturl(){
@@ -350,6 +351,23 @@ class instagram : Fragment() {
                 textView = itemView.findViewById(R.id.title)
             }
         }
+
+    }
+
+    private fun downloadFile(fileURL: String, fileName: String) {
+        var folder = File("${Environment.getExternalStorageDirectory()}/Insta Downloader")
+        if (!folder.exists())
+            folder.mkdir()
+        val request = DownloadManager.Request(Uri.parse(fileURL))
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+        request.setTitle(fileName)
+        request.setDescription("Downloading...")
+        request.allowScanningByMediaScanner()
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        var pathtemp=context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        request.setDestinationInExternalPublicDir( "$pathtemp/Insta Downloader",fileName)
+        val manager= context!!.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        manager.enqueue(request)
 
     }
 
