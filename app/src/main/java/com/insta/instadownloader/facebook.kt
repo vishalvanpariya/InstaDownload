@@ -324,7 +324,18 @@ class facebook : Fragment() {
             request.setDescription("Downloading...")
             request.allowScanningByMediaScanner()
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            request.setDestinationInExternalPublicDir("/Insta Downloader",fileName)
+            if (".jpg" in fileName!!) {
+                request.setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_PICTURES,
+                    "/Insta Downloader/$fileName"
+                )
+            }
+            else{
+                request.setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_MOVIES,
+                    "/Insta Downloader/$fileName"
+                )
+            }
             val manager= context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             manager.enqueue(request)
 
